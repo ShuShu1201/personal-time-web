@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>許嘉修的個人時間主頁 ｜ AIoT-DA 課程專題成果</title>
+  <meta name="description" content="許嘉修的個人時間主頁：精準即時時鐘、世界時區、秒級與毫秒動態、番茄鐘專注與個人時間軸。">
+  <!-- Google Fonts: Outfit & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-dark">
+  <!-- Background Ambient Glows -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="ambient-glow glow-3"></div>
+
+  <!-- Main Container -->
+  <div class="app-container" id="appRoot">
+    <!-- Top Navigation / Header -->
+    <header class="app-header">
+      <div class="brand-section">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1 class="brand-title">許嘉修 ｜ 個人空間</h1>
+          <span class="brand-subtitle">AIoT-DA 課程 ｜ 現在時間 ＆ 個人專注儀表板</span>
+        </div>
+      </div>
+
+      <!-- Live Greeting & Date Pill -->
+      <div class="header-center-info">
+        <div class="greeting-pill" id="greetingPill">
+          <span class="greeting-icon" id="greetingIcon">✨</span>
+          <span class="greeting-text" id="greetingText">載入中...</span>
+        </div>
+      </div>
+
+      <!-- Controls: Theme Toggle & Quick Actions -->
+      <div class="header-actions">
+        <button id="soundToggleBtn" class="btn-icon" title="提示音開關" aria-label="提示音開關">
+          <svg id="soundIconOn" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          </svg>
+          <svg id="soundIconOff" class="hidden" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <line x1="23" y1="9" x2="17" y2="15"></line>
+            <line x1="17" y1="9" x2="23" y2="15"></line>
+          </svg>
+        </button>
+
+        <button id="themeToggleBtn" class="btn-icon" title="切換深淺色主題" aria-label="切換主題">
+          <svg id="sunIcon" class="hidden" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg id="moonIcon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+
+        <!-- User Profile Pill -->
+        <div class="user-profile-badge" id="profileBadge" title="點擊自訂個人資訊">
+          <div class="avatar-circle" id="userAvatar">許</div>
+          <span class="user-name" id="userNameDisplay">許嘉修</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ====================================================================
+         HERO SECTION: TIME NOW (現在時間核心專區)
+         ==================================================================== -->
+    <section class="hero-timenow-card" id="heroTimeSection">
+      <div class="timenow-header">
+        <div class="timenow-badge">
+          <span class="live-indicator-dot"></span>
+          <span class="badge-text">即時同步 ｜ TIME NOW</span>
+        </div>
+
+        <!-- Controls Toolbar -->
+        <div class="timenow-toolbar">
+          <button id="timeFormatToggleBtn" class="btn-tool" title="切換 12H / 24H 制">
+            <span class="tool-icon">⏱️</span>
+            <span id="formatLabel">24H 制</span>
+          </button>
+          <button id="msToggleBtn" class="btn-tool" title="毫秒顯示開關">
+            <span class="tool-icon">⚡</span>
+            <span id="msToggleLabel">毫秒: 開</span>
+          </button>
+          <button id="copyTimeBtn" class="btn-tool" title="複製現在時間">
+            <span class="tool-icon">📋</span>
+            <span>複製時間</span>
+          </button>
+          <button id="fullscreenBtn" class="btn-tool" title="進入全螢幕時鐘">
+            <span class="tool-icon">⛶</span>
+            <span>全螢幕</span>
+          </button>
+          <div class="timezone-picker-wrap">
+            <select id="timezoneSelect" class="custom-select" aria-label="切換時區">
+              <option value="local">📍 本地時區 (Local)</option>
+              <option value="Asia/Taipei">🇹🇼 台北時間 (UTC+8)</option>
+              <option value="Asia/Tokyo">🇯🇵 東京時間 (UTC+9)</option>
+              <option value="Europe/London">🇬🇧 倫敦時間 (UTC+1)</option>
+              <option value="Europe/Paris">🇫🇷 巴黎時間 (UTC+2)</option>
+              <option value="America/New_York">🇺🇸 紐約時間 (UTC-4)</option>
+              <option value="America/Los_Angeles">🇺🇸 洛杉磯 (UTC-7)</option>
+              <option value="Australia/Sydney">🇦🇺 雪梨時間 (UTC+10)</option>
+              <option value="UTC">🌐 UTC 標準時間</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Display Layout: Digital Time + Analog Watch -->
+      <div class="timenow-body">
+        <!-- Left: Massive Digital Clock -->
+        <div class="timenow-digital-area">
+          <div class="massive-digits" id="liveTimeDigits">
+            <span id="hours" class="digit-chunk">00</span>
+            <span class="colon">:</span>
+            <span id="minutes" class="digit-chunk">00</span>
+            <span class="colon">:</span>
+            <span id="seconds" class="digit-chunk seconds-chunk">00</span>
+            <span id="milliseconds" class="digit-ms">.00</span>
+            <span id="ampm" class="digit-ampm hidden">AM</span>
+          </div>
+
+          <!-- Date and Calendar Meta -->
+          <div class="timenow-meta-info">
+            <div class="date-hero-string" id="liveDateString">2026年 09月 16日 星期三</div>
+            <div class="calendar-extra-pills">
+              <span class="meta-pill" id="weekPill">第 38 週</span>
+              <span class="meta-pill" id="dayOfYearPill">第 259 天</span>
+              <span class="meta-pill timezone-pill" id="currentTzPill">時區：Asia/Taipei (UTC+8)</span>
+            </div>
+          </div>
+
+          <!-- Day Progress Bar -->
+          <div class="day-progress-wrap">
+            <div class="day-progress-header">
+              <span>今日 24 小時流逝進度</span>
+              <span id="dayProgressPercent" class="progress-pct">0.0%</span>
+            </div>
+            <div class="progress-track-hero">
+              <div class="progress-fill-hero" id="dayProgressBar"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Modern Luxury Analog Clock -->
+        <div class="timenow-analog-area">
+          <div class="analog-clock-wrap">
+            <svg class="analog-clock-face" viewBox="0 0 220 220">
+              <!-- Outer Ring -->
+              <circle cx="110" cy="110" r="104" class="ac-outer-ring"></circle>
+              <circle cx="110" cy="110" r="100" class="ac-inner-ring"></circle>
+
+              <!-- 12 Hour Dial Markers -->
+              <g class="ac-dial-markers" id="acDialMarkers">
+                <!-- Injected by JS/CSS -->
+              </g>
+
+              <!-- Hands -->
+              <line id="analogHourHand" x1="110" y1="110" x2="110" y2="60" class="ac-hand ac-hour"></line>
+              <line id="analogMinuteHand" x1="110" y1="110" x2="110" y2="40" class="ac-hand ac-minute"></line>
+              <line id="analogSecondHand" x1="110" y1="125" x2="110" y2="28" class="ac-hand ac-second"></line>
+
+              <!-- Center Pivot Cap -->
+              <circle cx="110" cy="110" r="6" class="ac-center-dot"></circle>
+              <circle cx="110" cy="110" r="2" class="ac-center-inner"></circle>
+            </svg>
+            <div class="analog-city-label" id="analogCityLabel">TAIPEI</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Copy Toast Notification -->
+      <div class="copy-toast hidden" id="copyToast">
+        <span>✓ 已成功複製現在時間至剪貼簿！</span>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SECONDARY GRID: WORLD CLOCK, POMODORO, TRACKER
+         ==================================================================== -->
+    <main class="dashboard-grid">
+      <!-- 1. World Clocks Multi-City Card -->
+      <section class="grid-card world-clocks-card">
+        <div class="card-header">
+          <div class="card-title-wrap">
+            <span class="card-tag">全球時差</span>
+            <h2 class="card-title">世界各大城市即時時間</h2>
+          </div>
+        </div>
+
+        <div class="world-time-strip-vertical">
+          <div class="world-city-row" data-tz="Asia/Taipei">
+            <div class="wc-left">
+              <span class="wc-flag">🇹🇼</span>
+              <div class="wc-info">
+                <span class="wc-name">台北 (Taipei)</span>
+                <span class="wc-diff">標準本地 / UTC+8</span>
+              </div>
+            </div>
+            <span class="wc-time" id="wtTaipei">--:--:--</span>
+          </div>
+
+          <div class="world-city-row" data-tz="Asia/Tokyo">
+            <div class="wc-left">
+              <span class="wc-flag">🇯🇵</span>
+              <div class="wc-info">
+                <span class="wc-name">東京 (Tokyo)</span>
+                <span class="wc-diff">+1 小時 / UTC+9</span>
+              </div>
+            </div>
+            <span class="wc-time" id="wtTokyo">--:--:--</span>
+          </div>
+
+          <div class="world-city-row" data-tz="Europe/London">
+            <div class="wc-left">
+              <span class="wc-flag">🇬🇧</span>
+              <div class="wc-info">
+                <span class="wc-name">倫敦 (London)</span>
+                <span class="wc-diff">-7 小時 / UTC+1</span>
+              </div>
+            </div>
+            <span class="wc-time" id="wtLondon">--:--:--</span>
+          </div>
+
+          <div class="world-city-row" data-tz="America/New_York">
+            <div class="wc-left">
+              <span class="wc-flag">🇺🇸</span>
+              <div class="wc-info">
+                <span class="wc-name">紐約 (New York)</span>
+                <span class="wc-diff">-12 小時 / UTC-4</span>
+              </div>
+            </div>
+            <span class="wc-time" id="wtNewYork">--:--:--</span>
+          </div>
+
+          <div class="world-city-row" data-tz="Australia/Sydney">
+            <div class="wc-left">
+              <span class="wc-flag">🇦🇺</span>
+              <div class="wc-info">
+                <span class="wc-name">雪梨 (Sydney)</span>
+                <span class="wc-diff">+2 小時 / UTC+10</span>
+              </div>
+            </div>
+            <span class="wc-time" id="wtSydney">--:--:--</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Pomodoro Focus Timer Card -->
+      <section class="grid-card pomodoro-card">
+        <div class="card-header">
+          <div class="card-title-wrap">
+            <span class="card-tag tag-purple">高效專注</span>
+            <h2 class="card-title">番茄鐘計時器</h2>
+          </div>
+          <div class="session-counter" title="今日已完成的番茄鐘">
+            <span class="tomato-icon">🍅</span>
+            <span id="pomodoroCount">0</span> 輪完成
+          </div>
+        </div>
+
+        <!-- Timer Mode Tabs -->
+        <div class="timer-tabs">
+          <button class="tab-btn active" data-mode="work">專注 (25m)</button>
+          <button class="tab-btn" data-mode="shortBreak">短休 (5m)</button>
+          <button class="tab-btn" data-mode="longBreak">長休 (15m)</button>
+        </div>
+
+        <!-- Circular Progress Ring -->
+        <div class="timer-circle-wrapper">
+          <svg class="progress-ring" viewBox="0 0 280 280">
+            <defs>
+              <linearGradient id="timerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#00f2fe" />
+                <stop offset="100%" stop-color="#4facfe" />
+              </linearGradient>
+            </defs>
+            <circle class="ring-bg" cx="140" cy="140" r="120" />
+            <circle class="ring-progress" id="timerProgressRing" cx="140" cy="140" r="120" />
+          </svg>
+          <div class="timer-content">
+            <div class="timer-clock" id="pomodoroDisplay">25:00</div>
+            <div class="timer-status-text" id="timerStatusLabel">準備就緒，專注投入！</div>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="timer-controls">
+          <button id="timerResetBtn" class="btn btn-secondary" title="重設計時">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+              <path d="M3 3v5h5"></path>
+            </svg>
+            重設
+          </button>
+          <button id="timerMainBtn" class="btn btn-primary btn-pulse">
+            <svg id="playIcon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <svg id="pauseIcon" class="hidden" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <rect x="6" y="4" width="4" height="16"></rect>
+              <rect x="14" y="4" width="4" height="16"></rect>
+            </svg>
+            <span id="timerBtnText">開始專注</span>
+          </button>
+          <button id="timerSkipBtn" class="btn btn-secondary" title="跳過此輪">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="5 4 15 12 5 20 5 4"></polygon>
+              <line x1="19" y1="5" x2="19" y2="19"></line>
+            </svg>
+            跳過
+          </button>
+        </div>
+      </section>
+
+      <!-- 3. Time Tracker & Activity Logger Card -->
+      <section class="grid-card tracker-card">
+        <div class="card-header">
+          <div class="card-title-wrap">
+            <span class="card-tag tag-green">時間追蹤</span>
+            <h2 class="card-title">活動與投入紀錄</h2>
+          </div>
+          <span class="active-task-indicator" id="trackerIndicator">閒置中</span>
+        </div>
+
+        <div class="tracker-input-box">
+          <input type="text" id="taskNameInput" placeholder="目前在進行什麼？(例：專案設計、撰寫程式...)" class="custom-input" />
+          <div class="tracker-meta-row">
+            <div class="category-chips" id="categoryChips">
+              <button class="chip active" data-cat="work">💻 工作</button>
+              <button class="chip" data-cat="study">📚 學習</button>
+              <button class="chip" data-cat="code">⚡ 程式</button>
+              <button class="chip" data-cat="read">📖 閱讀</button>
+              <button class="chip" data-cat="life">☕ 休閒</button>
+            </div>
+            <div class="tracker-action-wrap">
+              <span class="stopwatch-display" id="stopwatchDisplay">00:00:00</span>
+              <button id="stopwatchToggleBtn" class="btn btn-action">
+                <span id="stopwatchBtnText">開始計時</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="analytics-preview">
+          <div class="analytics-title-row">
+            <span class="sub-label">今日時間投入分配</span>
+            <span class="sub-total" id="todayTotalLogged">總計：0 分鐘</span>
+          </div>
+          <div class="category-bars" id="categoryBars"></div>
+        </div>
+
+        <div class="recent-logs-section">
+          <div class="logs-header-row">
+            <span class="sub-label">最近記錄項目</span>
+            <button id="clearLogsBtn" class="btn-text">清空記錄</button>
+          </div>
+          <div class="logs-list" id="logsList"></div>
+        </div>
+      </section>
+
+      <!-- 4. Bottom Full Width: Daily Timeline & Planner -->
+      <section class="grid-card timeline-card">
+        <div class="card-header">
+          <div class="card-title-wrap">
+            <span class="card-tag tag-orange">日程時間軸</span>
+            <h2 class="card-title">個人今日規劃與時間軸</h2>
+          </div>
+          <div class="timeline-stats">
+            <span id="timelineCountSummary">0 / 0 任務完成</span>
+          </div>
+        </div>
+
+        <form id="addTimelineItemForm" class="timeline-add-form">
+          <div class="form-group time-group">
+            <input type="time" id="planStartTime" class="custom-input time-input" value="09:00" required />
+            <span class="to-text">至</span>
+            <input type="time" id="planEndTime" class="custom-input time-input" value="10:30" required />
+          </div>
+          <div class="form-group title-group">
+            <input type="text" id="planTitleInput" class="custom-input" placeholder="規劃一項活動 (例：專案需求梳理、團隊技術會議...)" required />
+          </div>
+          <div class="form-group category-group">
+            <select id="planCategorySelect" class="custom-select">
+              <option value="work">💼 工作事務</option>
+              <option value="meeting">👥 會議交流</option>
+              <option value="focus">🎯 深度專注</option>
+              <option value="rest">☕ 休息用餐</option>
+              <option value="exercise">🏃 運動健康</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary add-item-btn">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            加入時間軸
+          </button>
+        </form>
+
+        <div class="daily-hours-slider-wrap">
+          <div class="hours-header-ruler">
+            <span>00:00</span>
+            <span>04:00</span>
+            <span>08:00</span>
+            <span>12:00</span>
+            <span>16:00</span>
+            <span>20:00</span>
+            <span>24:00</span>
+          </div>
+          <div class="hours-bar-track" id="hoursBarTrack">
+            <div class="current-time-indicator" id="timelineNowPointer" title="當前時間"></div>
+          </div>
+        </div>
+
+        <div class="timeline-items-list" id="timelineItemsList"></div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div class="footer-content">
+        <p>© 2026 許嘉修 (Chia-Hsiu Hsu) ｜ AIoT-DA 課程專題成果 ｜ 個人時間與生活主頁</p>
+        <div class="footer-shortcuts">
+          <span>💡 提示：所有資料皆安全保存於本機瀏覽器中，重新整理或離線皆不受影響。</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Profile Settings Modal -->
+  <div class="modal-overlay hidden" id="profileModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">自訂個人資訊</h3>
+        <button class="btn-icon close-modal" id="closeModalBtn" aria-label="關閉視窗">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-field">
+          <label for="inputUserName">顯示暱稱 / 姓名</label>
+          <input type="text" id="inputUserName" class="custom-input" placeholder="例如：Alex Chen" maxlength="20" />
+        </div>
+        <div class="form-field">
+          <label for="inputUserMotto">今日座右銘 / 目標</label>
+          <input type="text" id="inputUserMotto" class="custom-input" placeholder="例如：專注當下，日拱一卒。" maxlength="40" />
+        </div>
+        <div class="form-field">
+          <label>頭像顏色風格</label>
+          <div class="avatar-color-choices" id="avatarColorChoices">
+            <button type="button" class="color-dot active" style="--c: linear-gradient(135deg, #00f2fe, #4facfe)" data-grad="linear-gradient(135deg, #00f2fe, #4facfe)"></button>
+            <button type="button" class="color-dot" style="--c: linear-gradient(135deg, #b176f2, #e056fd)" data-grad="linear-gradient(135deg, #b176f2, #e056fd)"></button>
+            <button type="button" class="color-dot" style="--c: linear-gradient(135deg, #ff758c, #ff7eb3)" data-grad="linear-gradient(135deg, #ff758c, #ff7eb3)"></button>
+            <button type="button" class="color-dot" style="--c: linear-gradient(135deg, #43e97b, #38f9d7)" data-grad="linear-gradient(135deg, #43e97b, #38f9d7)"></button>
+            <button type="button" class="color-dot" style="--c: linear-gradient(135deg, #f6d365, #fda085)" data-grad="linear-gradient(135deg, #f6d365, #fda085)"></button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="cancelProfileBtn">取消</button>
+        <button class="btn btn-primary" id="saveProfileBtn">儲存變更</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Immediate Execution for Zero-Lag Initial Clock Display -->
+  <script>
+    // Immediately paint time without waiting for DOMContentLoaded
+    (function() {
+      try {
+        var d = new Date();
+        var h = d.getHours(), m = d.getMinutes(), s = d.getSeconds();
+        var pad = function(n) { return n < 10 ? '0' + n : '' + n; };
+        var hEl = document.getElementById('hours');
+        var mEl = document.getElementById('minutes');
+        var sEl = document.getElementById('seconds');
+        if (hEl) hEl.textContent = pad(h);
+        if (mEl) mEl.textContent = pad(m);
+        if (sEl) sEl.textContent = pad(s);
+      } catch(e) {}
+    })();
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>

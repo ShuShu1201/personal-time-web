@@ -8,14 +8,14 @@
 
 > 👤 **專題作者**：**許嘉修 (Chia-Hsiu Hsu)**  
 > 📚 **所屬課程**：**AIoT-DA（人工智慧物聯網與資料分析）— 第一堂課 (Class 1)** 實作成果。  
-> 🎯 **專題定位**：打造兼具**極簡科技毛玻璃美學 (Glassmorphism)**、**實時時間監測 (Live Time Now)** 與 **個人高效生活/學習管理** 的專屬個人主頁 (Personal Page)。
+> 🎯 **專題定位**：打造兼具**實時時間監測 (Live Time Now)** 與 **個人高效生活/學習管理** 的專屬個人主頁 (Personal Page)。
 
 ---
 
 ## 🌐 線上展示 (Live Demo)
 
 - 🔗 **線上即時預覽網址 (GitHub Pages)**:  
-  **`https://<你的GitHub帳號>.github.io/personal-time-web/`**  
+  **`https://ShuShu1201.github.io/personal-time-web/`**  
   *(將 `<你的GitHub帳號>` 替換為您的 GitHub Username，推送後開啟 GitHub Pages 即可立即線上存取)*
 
 - ⚡ **本地免伺服器即時開啟**:  
